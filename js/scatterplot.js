@@ -76,12 +76,33 @@ class Scatterplot {
     let vis = this;
 
     // Add circles
-    vis.visG.selectAll('circle')
-      .data(vis.data)
+    const circles = vis.visG.selectAll('circle').data(vis.data)
       .join('circle')
+
+    circles
+      .transition()
+      .duration(3000)
       .attr('cx', d => vis.xScale(d.population))
       .attr('cy', d => vis.yScale(d.area))
       .attr('r', 5)
+
+      circles
+        .on('mouseover', (event,d) => {
+          d3.select('#tooltip')
+            .style('display', 'block')
+            .style('left', (event.pageX ) + 'px')
+            .style('top', (event.pageY) + 'px')
+            .html(`
+              <div class="tooltip-title">${d.city}</div>
+              <ul>
+                   <li>Population: ${d.population}</li>
+                   <li>Area: ${d.area}</li>
+              </ul>
+            `);
+        })
+        .on('mouseleave', () => {
+          d3.select('#tooltip').style('display', 'none');
+        });
 
     // Update the axes
     vis.xAxisG.call(this.xAxis)

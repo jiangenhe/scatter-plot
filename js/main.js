@@ -7,7 +7,7 @@ d3.csv('data/cities_and_population_area.csv')
         d.population = parseInt(d.population)
       })
 
-      const scatterplot = new Scatterplot({parentElement:"body", containerHeight: 400}, data)
+      const scatterplot = new Scatterplot({parentElement:"#scatterplot-container", containerHeight: 400}, data)
       scatterplot.updateVis()
 
       d3.select('body').append('button').text('add data').on('click', function () {
