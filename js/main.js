@@ -1,3 +1,4 @@
+const dispatcher = d3.dispatch('filterCountries');
 let filteredCountry = []
 d3.csv('data/cities_and_population_area.csv')
     .then(data => {
@@ -26,16 +27,19 @@ d3.csv('data/cities_and_population_area.csv')
         .attr("type", "checkbox")
         .attr("id", function(d,i) { return d; })
         .on('click', e => {
-          if (e.target.checked) {
-            filteredCountry = filteredCountry.filter(d => d != e.target.id)
+          dispatcher.call('filterCountries', e, {name: e.target.id, selected: e.target.checked})
+        })
+
+
+        dispatcher.on('filterCountries', country =>{
+          console.log(country)
+          if (country.selected) {
+            filteredCountry = filteredCountry.filter(d => d != country.name)
           } else {
-            filteredCountry.push(e.target.id)
+            filteredCountry.push(country.name)
           }
           scatterplot.data = data.filter(d => !filteredCountry.includes(d.country))
           scatterplot.updateVis()
         })
-
-
-
 
     })

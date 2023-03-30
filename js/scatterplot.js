@@ -76,7 +76,7 @@ class Scatterplot {
     let vis = this;
 
     // Add circles
-    const circles = vis.visG.selectAll('circle').data(vis.data)
+    const circles = vis.visG.selectAll('circle').data(vis.data, d => d.city)
       .join('circle')
 
     circles
